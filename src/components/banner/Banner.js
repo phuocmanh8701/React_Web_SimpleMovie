@@ -7,6 +7,8 @@ const Banner = () => {
     `https://api.themoviedb.org/3/movie/upcoming?api_key=e6f0a2094c57d5470ca1ced8bfcbe126`,
     fetcher
   );
+  console.log(data)
+
   const movies = data?.results || [];
   return (
     <section className="banner h-[500px] page-container mb-20 overflow-hidden select-none">
