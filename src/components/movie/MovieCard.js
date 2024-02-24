@@ -1,21 +1,25 @@
 import React from "react";
+import "swiper/scss";
 
-const MovieCard = (name) => {
+const MovieCard = ({ item }) => {
+  const { title, vote_average, release_date, poster_path } = item;
   return (
-    <div className="movie-card rounded-lg p-3 bg-slate-800 text-white">
+    <div className="movie-card flex flex-col rounded-lg p-3 bg-slate-800 text-white h-full select-none">
       <img
-        src="https://upload.wikimedia.org/wikipedia/vi/7/71/%C3%81p_ph%C3%ADch_phim_Ng%C6%B0%E1%BB%9Di_Nh%E1%BB%87n_kh%C3%B4ng_c%C3%B2n_nh%C3%A0.jpg"
+        src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
         alt=""
         className="w-full h-[250px] object-cover rounded-lg mb-5"
       />
-      <h3 className="capitalize text-xl font-bold mb-3">Now playing</h3>
-      <div className="flex items-center justify-between text-sm opacity-50 mb-10">
-        <span>2017</span>
-        <span>7.4</span>
+      <div className="flex flex-col flex-1">
+        <h3 className="capitalize text-xl font-bold mb-3">{title}</h3>
+        <div className="flex items-center justify-between text-sm opacity-50 mb-10">
+          <span>{new Date(release_date).getFullYear()}</span>
+          <span>{vote_average}</span>
+        </div>
+        <button className="py-3 px-6 rounded-lg bg-primary text-white font-medium w-full mt-auto">
+          Watch Now
+        </button>
       </div>
-      <button className="py-3 px-6 rounded-lg bg-primary text-white font-medium w-full">
-        Watch Now
-      </button>
     </div>
   );
 };
