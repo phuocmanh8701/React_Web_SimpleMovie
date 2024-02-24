@@ -18,6 +18,7 @@ function App() {
             src="http://genk.mediacdn.vn/2019/8/20/1-15662898065871774855253.jpg"
             alt="Avenger"
             className="w-full h-full object-cover rounded-lg"
+
           />
           <div className="absolute left-5 bottom-5 w-full text-white">
             <h2 className="font-bold text-3xl mb-5">Avengers: Endgame</h2>
