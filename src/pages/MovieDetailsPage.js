@@ -1,17 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { apiKey, fetcher, tmdbApi } from "../config";
-// import { Swiper } from "swiper/types";
+import { fetcher, tmdbApi } from "../config";
 import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "../components/movie/MovieCard";
-//https://api.themoviedb.org/3/movie/{movie_id}api_key=e6f0a2094c57d5470ca1ced8bfcbe126
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
-  const { data, error } = useSWR(tmdbApi.getMovieDetailsPage(movieId), fetcher);
+  const { data } = useSWR(tmdbApi.getMovieDetailsPage(movieId), fetcher);
   if (!data) return null;
   const { backdrop_path, poster_path, title, genres, overview } = data;
-  //   console.log(data);
   return (
     <div className="py-10">
       <div className="w-full h-[600px] relative mb-10">
@@ -19,13 +16,13 @@ const MovieDetailsPage = () => {
         <div
           className="w-full h-full bg-cover bg-no-repeat"
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/original/${backdrop_path})`,
+            backgroundImage: `url(${tmdbApi.imageOriginal(backdrop_path)})`,
           }}
         ></div>
       </div>
       <div className="w-full h-[400px] max-w-[800px] mx-auto -mt-[200px] relative z-10 pb-10">
         <img
-          src={`https://image.tmdb.org/t/p/original/${poster_path}`}
+          src={`${tmdbApi.imageOriginal(poster_path)}`}
           className="w-full h-full object-cover rounded-xl"
           alt=""
         />
@@ -57,8 +54,7 @@ const MovieDetailsPage = () => {
 
 function MovieCredit() {
   const { movieId } = useParams();
-  const { data, error } = useSWR(
-    // `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`
+  const { data } = useSWR(
     tmdbApi.getMovieMeta(movieId, "credits"),
     fetcher
   );
@@ -72,7 +68,7 @@ function MovieCredit() {
         {cast.slice(0, 4).map((item) => (
           <div className="cast-item " key={item.id}>
             <img
-              src={`https://image.tmdb.org/t/p/original/${item.profile_path}`}
+              src={`${tmdbApi.imageOriginal(item.profile_path)}`}
               className="w-full h-[350px] object-cover rounded-lg mb-3"
               alt=""
             />
@@ -85,13 +81,13 @@ function MovieCredit() {
 }
 function VideosTrailer() {
   const { movieId } = useParams();
-  const { data, error } = useSWR(
+  const { data } = useSWR(
     tmdbApi.getMovieMeta(movieId, "videos"),
 
     fetcher
   );
   if (!data || data.length >= 0) return null;
-  const { results, item } = data;
+  const { results } = data;
   return (
     <div className="py-10">
       <div className="flex flex-col gap-5">
@@ -120,7 +116,7 @@ function VideosTrailer() {
 }
 function MovieSimilar() {
   const { movieId } = useParams();
-  const { data, error } = useSWR(
+  const { data } = useSWR(
     tmdbApi.getMovieMeta(movieId, "similar"),
 
     fetcher
