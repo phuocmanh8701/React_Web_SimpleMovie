@@ -1,17 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { apiKey, fetcher } from "../config";
+import { apiKey, fetcher, tmdbApi } from "../config";
 // import { Swiper } from "swiper/types";
-import { SwiperSlide,Swiper } from "swiper/react";
+import { SwiperSlide, Swiper } from "swiper/react";
 import MovieCard from "../components/movie/MovieCard";
 //https://api.themoviedb.org/3/movie/{movie_id}api_key=e6f0a2094c57d5470ca1ced8bfcbe126
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
-  const { data, error } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`,
-    fetcher
-  );
+  const { data, error } = useSWR(tmdbApi.getMovieDetailsPage(movieId), fetcher);
   if (!data) return null;
   const { backdrop_path, poster_path, title, genres, overview } = data;
   //   console.log(data);
@@ -61,7 +58,8 @@ const MovieDetailsPage = () => {
 function MovieCredit() {
   const { movieId } = useParams();
   const { data, error } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`,
+    // `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`
+    tmdbApi.getMovieMeta(movieId, "credits"),
     fetcher
   );
   if (!data) return null;
@@ -88,7 +86,8 @@ function MovieCredit() {
 function VideosTrailer() {
   const { movieId } = useParams();
   const { data, error } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`,
+    tmdbApi.getMovieMeta(movieId, "videos"),
+
     fetcher
   );
   if (!data || data.length >= 0) return null;
@@ -122,7 +121,8 @@ function VideosTrailer() {
 function MovieSimilar() {
   const { movieId } = useParams();
   const { data, error } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}`,
+    tmdbApi.getMovieMeta(movieId, "similar"),
+
     fetcher
   );
   if (!data) return null;
